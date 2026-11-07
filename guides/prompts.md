@@ -54,7 +54,11 @@ Run report (always emit at the end):
 ```markdown
 ## UI workflow run report
 - Component: <name> | Mode: NEW | UPDATE
-- G1..G7: PASS/FAIL/SKIPPED(reason) — one line each
+- G1..G3: PASS/FAIL — one line each
+- G4..G6: per check ID (G4-1..G4-5, G5-1..G5-2, G6-1..G6-2): PASS/FAIL —
+  use the check IDs from the verification spec in the initial prompt;
+  SKIPPED(reason) only if the spec genuinely doesn't apply
+- G7: PASS/FAIL (+ diff summary on UPDATE)
 - Fix-retries used: <n> per failed gate
 - Artifacts: <paths: screenshots, traces, baseline diffs>
 - Halted at: <gate or none> | Blockers: <missing tools, red gates, ambiguities>
@@ -82,6 +86,25 @@ Mount it on a new `/gallery` route in `src/routeTree.tsx` (client-side
 routing, manual route tree — follow the existing pattern there). Seed with
 ~12 demo cards. Respect `prefers-reduced-motion` (instant states, no motion).
 
+Verification spec (G4–G6) — implement each check as a boolean assertion via
+the named MCP tools; report each check ID as PASS/FAIL in the run report:
+
+- G4-1 (take_snapshot): all cards present in the accessibility tree; count matches `cards` length
+- G4-2 (evaluate_script): `document.getAnimations()` — grid animations use scroll-driven
+  timelines (view()), not time-driven; animation-range reflects `range` prop; stagger offsets applied per card
+- G4-3 (evaluate_script): set scroll to 25/50/75% of scroller range; at each stop,
+  `animation.currentTime` advances proportionally (monotonic, no self-advance at rest)
+- G4-4 (take_screenshot): at each scroll stop, cards mid-reveal render correctly
+  (opacity/transform between initial and final states; no flicker artifacts)
+- G4-5 (resize_page + emulate): at mobile viewport and with reduced motion emulated,
+  cards reach final states instantly (no partial/mid-animation holds)
+- G5-1 (performance trace, scripted scroll): scroll-driven animations run on
+  compositor thread (no main-thread layout/paint spikes attributable to the animation)
+- G5-2 (performance trace): no long tasks > 50ms during the scroll sequence
+- G6-1 (firefox-devtools MCP): rerun G4-2 and G4-3 in Firefox; identical outcomes
+- G6-2 (firefox-devtools MCP): screenshot at scroll stops; no visual divergence
+  from the Chromium captures in G4-4
+
 Follow the UI component workflow in AGENTS.md, steps 1 through 7 (G1–G7),
 including the run report at the end. Stop after step 7 — do not open a PR.
 ```
@@ -93,6 +116,9 @@ including the run report at the end. Stop after step 7 — do not open a PR.
 ```markdown
 Update `RevealGrid` in `src/components/RevealGrid/`: <describe change, e.g.
 "add prop `columns: 1 | 2 | 3`, default 2">.
+
+Apply the G4–G6 verification spec from block 2 of guides/prompts.md (extend
+with check IDs for any new behavior, e.g. G4-6 for a new prop).
 
 Follow the UI component workflow in AGENTS.md, steps 1 through 7 in UPDATE
 mode: G7 means `agent-browser diff` against the committed baselines in
