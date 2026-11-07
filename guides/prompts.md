@@ -19,7 +19,7 @@ the run report defined in block 1. You do not paste anything else mid-flow.
 
 ## 1. → `AGENTS.md` (repo root) — paste once, before the first component build
 
-```markdown
+````markdown
 ## UI component workflow (MANDATORY)
 
 When asked to build or update a component under `src/components/`, follow
@@ -63,7 +63,7 @@ Run report (always emit at the end):
 - Artifacts: <paths: screenshots, traces, baseline diffs>
 - Halted at: <gate or none> | Blockers: <missing tools, red gates, ambiguities>
 ```
-```
+````
 
 ---
 
