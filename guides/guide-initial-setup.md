@@ -1,6 +1,8 @@
 # Initial Setup — reveal-grid-app
 
-This documents how this repo was scaffolded, so you can reproduce or extend it.
+One-time steps to get a fresh clone ready for the UI component workflow.
+(How the repo was scaffolded: Vite `react-ts` template + Storybook init;
+stack table below for reference.)
 
 ## Stack
 
@@ -14,7 +16,38 @@ This documents how this repo was scaffolded, so you can reproduce or extend it.
 | Lint + format  | Biome 2                                     |
 | Icons          | lucide-react                                |
 
-## Commands
+## 1. Install dependencies
+
+```sh
+npm install
+npx playwright install chromium   # browser for story tests
+```
+
+## 2. Register tools with your coding agent (harness)
+
+Required by the agent workflow (`prompts.md`); these are not npm dependencies:
+
+- [ ] chrome-devtools MCP (e.g. `npx chrome-devtools-mcp@latest --headless`)
+- [ ] firefox-devtools MCP (a local Firefox must also be installed)
+- [ ] Storybook MCP (optional; endpoint `http://localhost:6006/mcp`, only
+      while `npm run storybook` runs)
+- [ ] agent-browser (`npm i -g agent-browser && agent-browser install`)
+
+## 3. Activate the workflow rule
+
+- [ ] Paste block 1 of [`prompts.md`](prompts.md) into `AGENTS.md` (repo root)
+      and commit it
+
+## 4. Sanity-check
+
+```sh
+npm run lint && npm test && npm run test-storybook && npm run build
+```
+
+All green → you're ready to run the component workflow
+(`guide-example-ui-component.md`).
+
+## Commands (reference)
 
 ```sh
 npm run dev             # Vite dev server
@@ -27,7 +60,7 @@ npm run storybook       # Storybook dev server on :6006
 npm run build-storybook # static build of Storybook
 ```
 
-## Layout
+## Layout (reference)
 
 ```
 src/
@@ -40,35 +73,19 @@ src/
   components/
     RevealGrid/       # empty — created for the example component
 .storybook/
-  main.ts             # stories glob, addons: vitest, a11y, docs
+  main.ts             # stories glob, addons: vitest, a11y, docs, mcp
   preview.tsx         # a11y test mode: 'todo'
 guides/               # this documentation
 ```
 
-## Notes
+## Notes (reference)
 
-- **Two Vitest projects** live in `vite.config.ts`: `unit` (jsdom) and `storybook`
-  (browser mode via Playwright Chromium). Install the browser once with
-  `npx playwright install chromium`.
+- **Two Vitest projects** live in `vite.config.ts`: `unit` (jsdom) and
+  `storybook` (browser mode via Playwright Chromium).
 - **Storybook MCP**: enabled via `@storybook/addon-mcp` in `.storybook/main.ts`.
-  Run `npm run storybook` and the MCP server is at `http://localhost:6006/mcp`.
-  Register it in your agent harness if you want docs/story/test tools.
-- **Biome scope**: `biome.json` lints/formats `src/` only, and excludes
-  `*.stories.*` files (CSF objects trip import-order rules). Config files,
-  `.storybook/`, and assets are not linted.
+- **Biome scope**: `biome.json` lints/formats `src/` only and excludes
+  `*.stories.*` files. Config files, `.storybook/`, and assets are not linted.
 - **Manual routing**: routes are composed in `src/routeTree.tsx`
   (createRootRoute/createRoute) — deliberately no file-based route generation.
-- `test-storybook` currently passes with no test files (`--passWithNoTests`)
-  until stories exist.
-
-## Harness prerequisites (dev machine — complete before the first component build)
-
-Required by the agent workflow (see `prompts.md`); not npm dependencies:
-
-- [ ] chrome-devtools MCP registered in your coding agent (e.g. `npx chrome-devtools-mcp@latest --headless`)
-- [ ] firefox-devtools MCP registered
-- [ ] Storybook MCP registered (optional; endpoint `http://localhost:6006/mcp`
-      while `npm run storybook` runs)
-- [ ] agent-browser installed (`npm i -g agent-browser && agent-browser install`)
-- [ ] Playwright Chromium for story tests (`npx playwright install chromium`)
-- [ ] `AGENTS.md` populated with block 1 of [`prompts.md`](prompts.md)
+- `test-storybook` passes with no test files (`--passWithNoTests`) until
+  stories exist.

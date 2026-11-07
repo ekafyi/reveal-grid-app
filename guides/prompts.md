@@ -1,9 +1,9 @@
 # Prompts — copy-paste blocks for the UI component workflow
 
-`guide-*.md` files explain the flow for humans. This file contains the
-executable artifacts. Nothing here runs automatically — the dev wires it up.
+Each block below is pasted manually by the dev to the stated target. Nothing
+here runs automatically.
 
-**How to use (in this order, first time):**
+**How to use:**
 
 | Block | What | Where it goes | When |
 | ----- | ---- | ------------- | ---- |
@@ -11,12 +11,9 @@ executable artifacts. Nothing here runs automatically — the dev wires it up.
 | 2 | Initial prompt (NEW) | First message to the coding agent | Every time you start a new component |
 | 3 | Initial prompt (UPDATE) | First message to the coding agent | Every time you change an existing component |
 
-Harness/tool prerequisites live in
-[`guide-initial-setup.md`](guide-initial-setup.md) — complete them before the
-first component build.
-
-The agent then runs autonomously through step 7 and emits the run report
-defined in block 1. You do not paste anything else mid-flow.
+One-time machine/harness setup: see [`guide-initial-setup.md`](guide-initial-setup.md).
+After block 1 is in place, the agent runs autonomously through step 7 and emits
+the run report defined in block 1. You do not paste anything else mid-flow.
 
 ---
 
@@ -129,7 +126,3 @@ mode: G7 means `agent-browser diff` against the committed baselines in
 baselines in the same change set and say so in the run report. Stop after
 step 7 — do not open a PR.
 ```
-
----
-
-## 4. → Dev's machine/harness — moved to [`guide-initial-setup.md`](guide-initial-setup.md)

@@ -1,8 +1,8 @@
 # Example: UI Component Workflow — `RevealGrid` (scroll-driven animation)
 
-This is the agreed workflow for building/updating UI components with a coding agent.
-Example case: a card grid that reveals cards as they scroll into view
-(`animation-timeline: view()` + `animation-range`).
+Demonstrates adding a new UI component with a coding agent: steps 1–8, actor
+labeled per step (DEV / AGENT / CI). Example case: a card grid that reveals
+cards as they scroll into view (`animation-timeline: view()` + `animation-range`).
 Spec: https://developer.chrome.com/docs/css-ui/scroll-driven-animations
 
 Props: `cards` (title/body/image), `direction` (`up | left | fade`),
@@ -12,23 +12,11 @@ MCP tools referenced: chrome-devtools MCP, firefox-devtools MCP, agent-browser.
 Storybook MCP only where noted. The component dir `src/components/RevealGrid/`
 exists and is empty — the agent creates everything in it.
 
+One-time setup (deps, harness registrations, AGENTS.md): see
+[`guide-initial-setup.md`](guide-initial-setup.md). Copy-paste prompts:
+[`prompts.md`](prompts.md). Test inventory: [`tests.md`](tests.md).
+
 ---
-
-## (I) INITIAL SETUP — one-time per project (already done in this repo)
-
-1. **DEV** installs Storybook: `npx storybook@latest init` (or agent-driven:
-   "Set up Storybook for me with npm create storybook@latest ...")
-2. **DEV/AGENT** enables Vitest addon: `npx storybook add @storybook/addon-vitest`;
-   adds `test-storybook` script (CI runs it in a Playwright-capable environment)
-3. **DEV/AGENT** installs MCP addon: `npx storybook add @storybook/addon-mcp`
-   (optional; MCP endpoint at `http://localhost:6006/mcp` when Storybook runs)
-4. **DEV** registers MCP servers in the coding harness: Storybook (optional),
-   chrome-devtools (`npx chrome-devtools-mcp@latest --headless`),
-   firefox-devtools; macOS runner if Safari/WebKit needed
-5. **DEV** defines pass/fail gates + retry budget (e.g. "all stories green;
-   timeline assertions pass; no long tasks > 50ms during scroll; max 3 retries
-   then halt + report")
-6. **DEV** sets up dev server with seeded data + test-auth; auto-start script
 
 ## (II) NEW UI COMPONENT
 
