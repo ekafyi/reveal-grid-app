@@ -60,3 +60,15 @@ guides/               # this documentation
   (createRootRoute/createRoute) — deliberately no file-based route generation.
 - `test-storybook` currently passes with no test files (`--passWithNoTests`)
   until stories exist.
+
+## Harness prerequisites (dev machine — complete before the first component build)
+
+Required by the agent workflow (see `prompts.md`); not npm dependencies:
+
+- [ ] chrome-devtools MCP registered in your coding agent (e.g. `npx chrome-devtools-mcp@latest --headless`)
+- [ ] firefox-devtools MCP registered
+- [ ] Storybook MCP registered (optional; endpoint `http://localhost:6006/mcp`
+      while `npm run storybook` runs)
+- [ ] agent-browser installed (`npm i -g agent-browser && agent-browser install`)
+- [ ] Playwright Chromium for story tests (`npx playwright install chromium`)
+- [ ] `AGENTS.md` populated with block 1 of [`prompts.md`](prompts.md)

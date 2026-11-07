@@ -7,10 +7,13 @@ executable artifacts. Nothing here runs automatically — the dev wires it up.
 
 | Block | What | Where it goes | When |
 | ----- | ---- | ------------- | ---- |
-| 4 | Harness prerequisites | Dev's machine/harness config | Once, before the first component build |
 | 1 | Standing workflow rule | `AGENTS.md` (repo root) | Once, before the first component build; commit it |
 | 2 | Initial prompt (NEW) | First message to the coding agent | Every time you start a new component |
 | 3 | Initial prompt (UPDATE) | First message to the coding agent | Every time you change an existing component |
+
+Harness/tool prerequisites live in
+[`guide-initial-setup.md`](guide-initial-setup.md) — complete them before the
+first component build.
 
 The agent then runs autonomously through step 7 and emits the run report
 defined in block 1. You do not paste anything else mid-flow.
@@ -129,14 +132,4 @@ step 7 — do not open a PR.
 
 ---
 
-## 4. → Dev's machine/harness — complete once, before the first component build (not a prompt)
-
-```markdown
-- [ ] chrome-devtools MCP registered (e.g. `npx chrome-devtools-mcp@latest --headless`)
-- [ ] firefox-devtools MCP registered
-- [ ] Storybook MCP registered (optional; endpoint http://localhost:6006/mcp
-      while `npm run storybook` runs)
-- [ ] agent-browser installed (`npm i -g agent-browser && agent-browser install`)
-- [ ] Playwright Chromium for story tests (`npx playwright install chromium`)
-- [ ] AGENTS.md populated with block 1 above
-```
+## 4. → Dev's machine/harness — moved to [`guide-initial-setup.md`](guide-initial-setup.md)
