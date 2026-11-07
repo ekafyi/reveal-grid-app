@@ -44,10 +44,12 @@ exists and is empty — the agent creates everything in it.
 - **AGENT** writes `RevealGrid.stories.tsx`: `direction` × `range` matrix,
   `stagger` variants, scroll-container wrapper story (so `view()` binds to a
   scroller), edges (0/1/50 cards, reduced motion)
-- Copy conventions from existing `.stories.tsx` files in the repo (read them)
-- **Storybook MCP only if:** components come from an external published design
-  system (`docs-show` for real props) or the repo has no story conventions to
-  copy (`get-storybook-story-instructions`)
+- Copy conventions from existing `.stories.tsx` files in the repo (read them).
+  In this repo there are none yet — so use Storybook MCP
+  `get-storybook-story-instructions` (run `npm run storybook` first), or match
+  the style of `src/Home.test.tsx` + CSF 3 (`satisfies Meta<...>`, co-located file)
+- **Storybook MCP also if:** components come from an external published design
+  system (`docs-show` for real props)
 - *Why:* every story is automatically a render test (Vitest addon) — prop-matrix
   breadth nearly free; stories double as living docs
 
@@ -77,9 +79,9 @@ exists and is empty — the agent creates everything in it.
 - *Why:* engine truth — catches parsing/fallback differences Chromium silently forgives
 
 **Step 7 — visual baseline / regression (agent-browser)**
-- **Condition: NEW component** — **AGENT** scripts the journey
-  (`agent-browser open <url>` → scroll stops → `agent-browser screenshot ...`) and
-  commits captures as golden baselines in `__baselines__/RevealGrid/`
+- **Condition: NEW component** — **AGENT** scripts the journey (`agent-browser open <url>` → scroll stops →
+  `agent-browser screenshot ...`) and commits captures as golden baselines in
+  `baseline/RevealGrid/` (diffs land in `__diffs__/`, which is gitignored)
   - *Why:* nothing to regress against yet — this PR records what "correct" looks like
 - **Condition: UPDATE existing component** — **AGENT** runs the same journey →
   `agent-browser diff` vs committed baselines; unexpected drift fails the gate;
@@ -90,7 +92,10 @@ exists and is empty — the agent creates everything in it.
 **Step 8 — ship (merge gate)**
 - **AGENT** opens PR: component + stories + tests + baseline artifacts
   (and updated baselines if intended)
-- **CI** re-runs: unit tests, Storybook tests + coverage, agent-browser diff (on updates)
+- **CI** re-runs: unit tests, Storybook tests, agent-browser diff (on updates).
+  NOTE: no CI workflow is configured in this repo yet — locally this gate is
+  `npm run lint && npm test && npm run test-storybook` (+ diff on updates);
+  add a GitHub Actions workflow when the component lands
 - **DEV** reviews — taste, requirement fit, ambiguous engine diffs, whether
   visual drift is intended
 - *Why:* human gate for what automation can't judge; regression diff belongs

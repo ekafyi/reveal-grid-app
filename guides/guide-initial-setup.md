@@ -50,9 +50,12 @@ guides/               # this documentation
 - **Two Vitest projects** live in `vite.config.ts`: `unit` (jsdom) and `storybook`
   (browser mode via Playwright Chromium). Install the browser once with
   `npx playwright install chromium`.
-- **Storybook MCP**: the addon `@storybook/addon-mcp` is installed; run
-  `npm run storybook` and the MCP server is at `http://localhost:6006/mcp`.
+- **Storybook MCP**: enabled via `@storybook/addon-mcp` in `.storybook/main.ts`.
+  Run `npm run storybook` and the MCP server is at `http://localhost:6006/mcp`.
   Register it in your agent harness if you want docs/story/test tools.
+- **Biome scope**: `biome.json` lints/formats `src/` only, and excludes
+  `*.stories.*` files (CSF objects trip import-order rules). Config files,
+  `.storybook/`, and assets are not linted.
 - **Manual routing**: routes are composed in `src/routeTree.tsx`
   (createRootRoute/createRoute) — deliberately no file-based route generation.
 - `test-storybook` currently passes with no test files (`--passWithNoTests`)
